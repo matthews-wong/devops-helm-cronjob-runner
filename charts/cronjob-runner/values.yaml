@@ -1,0 +1,47 @@
+image:
+  repository: busybox
+  tag: "1.36.1"
+  pullPolicy: IfNotPresent
+
+# Cron expression, evaluated in the controller's time zone unless timeZone is set.
+schedule: "0 2 * * *"
+timeZone: "Etc/UTC"
+
+# Skip a run rather than overlap with one that is still going.
+concurrencyPolicy: Forbid
+# Seconds after the scheduled time in which a missed run may still start.
+startingDeadlineSeconds: 300
+successfulJobsHistoryLimit: 3
+failedJobsHistoryLimit: 3
+
+job:
+  backoffLimit: 2
+  # Hard cap on total runtime so a hung job cannot run forever.
+  activeDeadlineSeconds: 1800
+  ttlSecondsAfterFinished: 86400
+
+command: ["sh", "-c"]
+args: ["echo \"run at $(date -u +%FT%TZ)\""]
+
+env: {}
+
+resources:
+  requests:
+    cpu: 50m
+    memory: 64Mi
+  limits:
+    cpu: 200m
+    memory: 128Mi
+
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 10001
+  runAsGroup: 10001
+  seccompProfile:
+    type: RuntimeDefault
+
+containerSecurityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  capabilities:
+    drop: [ALL]

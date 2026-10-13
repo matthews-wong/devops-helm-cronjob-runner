@@ -1,0 +1,7 @@
+schedule: "*/15 * * * *"
+failedJobsHistoryLimit: 1
+successfulJobsHistoryLimit: 1
+job:
+  activeDeadlineSeconds: 300
+  backoffLimit: 0
+  ttlSecondsAfterFinished: 3600

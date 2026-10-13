@@ -20,3 +20,11 @@ rather than long `--set` chains.
 
 `make validate` lints the chart, renders it for each environment and
 checks the output with `kubeconform`.
+
+## Design notes
+
+- `values.schema.json` rejects a `latest` image tag and unknown
+  `concurrencyPolicy` values at lint/install time, before anything reaches the cluster.
+- `concurrencyPolicy: Forbid` plus `activeDeadlineSeconds` keeps a slow run
+  from piling up behind itself.
+- The service account token is not mounted; the job needs no API access.

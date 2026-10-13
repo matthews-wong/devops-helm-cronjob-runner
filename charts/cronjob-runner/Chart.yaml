@@ -1,0 +1,6 @@
+apiVersion: v2
+name: cronjob-runner
+description: Run a single scheduled container as a hardened CronJob
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
